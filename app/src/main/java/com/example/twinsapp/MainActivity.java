@@ -3,6 +3,7 @@ package com.example.twinsapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.View;
@@ -26,7 +27,26 @@ public class MainActivity extends AppCompatActivity {
         textViewStatus = findViewById(R.id.textViewStatus);
 
         setupButtonCalendar();
+        setupButtonTickets();
     }
+
+    private void setupButtonTickets() {
+        Button buttonTickets = findViewById(R.id.buttonTickets);
+        buttonTickets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTwinsTicketsWebsite(v);
+            }
+        });
+    }
+
+    private void openTwinsTicketsWebsite(View view) {
+        String url = "https://www.mlb.com/twins/tickets/single-game-tickets";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
 
     private void setupButtonCalendar(){
 
@@ -39,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
                 calIntent.setType("vnd.android.cursor.item/event");
                 calIntent.putExtra(CalendarContract.Events.TITLE, "Twins Opening Day");
                 calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "Target Field");
-                GregorianCalendar begDate = new GregorianCalendar(2024, 3, 28, 15, 10);
-                calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                        begDate.getTimeInMillis());
+                GregorianCalendar openingDay = new GregorianCalendar(2024, 2, 28, 15, 10);
+                calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, openingDay.getTimeInMillis());
                 startActivity(calIntent);
             }
         });
